@@ -1,0 +1,10 @@
+
+./build.sh
+
+./run.sh start server init
+
+docker exec -ti rp_mongo.server sh -c "cd /;mongo < init.js"
+
+mongod.conf security option may block init process
+
+./run.sh start app
