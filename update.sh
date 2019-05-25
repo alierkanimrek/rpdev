@@ -21,8 +21,10 @@ ui_handlers=$rpui/ui_handlers
 
 ui_app_dist=$ui_app/dist
 ui_app_dist_app=$ui_app_dist/app
+ui_app_i18n=$ui_app/src/i18n
+ui_app_i18n_dirs="$(find $ui_app_i18n/* -type d)"
 
-
+mkdir -p $ui_app_dist_app/i18n
 
 
 cd $ui_app
@@ -36,6 +38,10 @@ if [[ $current != $last ]]; then
     rm $tornado_chroot/app/*
 
     ./node_modules/.bin/webpack
+    OUT=$?
+    if ! [ $OUT -eq 0 ];then
+        exit 1
+    fi
     du -bs src > src.total
 
     cd $ui_app_dist_app
@@ -55,6 +61,14 @@ if [[ $current != $last ]]; then
     done
 
 fi
+
+
+for d in $ui_app_i18n_dirs
+do
+    /bin/cp -uv $d/*.json $ui_app_dist_app/i18n
+done
+
+/bin/cp -uv $ui_app_i18n/lang.json $ui_app_dist_app/i18n
 
 
 /bin/cp -uRv $rpserver/* $tornado_chroot
