@@ -45,6 +45,7 @@ mongo () {
 #--add-host outside:172.17.0.1
 tornado (){
     gnome-terminal -- docker run -it --name $tornado_run --network $subnet -p 8000:8000 -v $tornado_chroot:/usr/src/app -w /usr/src/app $tornado_docker bash ./run.sh
+    echo "docker exec -it " $tornado_run " /bin/bash"
 }
 
 
