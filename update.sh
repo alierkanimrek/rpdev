@@ -73,8 +73,9 @@ done
 mkdir -p $mongo_chroot
 /bin/cp -uRv $ui_app_dist/* $nginx_chroot > /dev/null
 /bin/cp -uv $rpui/* $tornado_chroot > /dev/null
-/bin/cp -uv $ui_handlers $tornado_chroot > /dev/null
+/bin/cp -uRv $ui_handlers $tornado_chroot > /dev/null
 /bin/cp -uv $ui_app_dist_app/*.html $tornado_chroot/template > /dev/null
+
 #/bin/cp -uRv $rpserver/* $tornado_chroot > /dev/null
 
 
