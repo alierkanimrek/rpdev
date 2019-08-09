@@ -73,7 +73,8 @@ if [ "$1" == "start" ];then
         docker rm $tornado_run &>/dev/null
         tornado
     else
-        help
+        ./run.sh start server
+	./run.sh start app
     fi
 
 elif [ "$1" == "stop" ];then
@@ -86,7 +87,8 @@ elif [ "$1" == "stop" ];then
         docker stop --time 1 $tornado_run &>/dev/null
         docker rm $tornado_run &>/dev/null
     else
-        help
+        ./run.sh stop app
+	./run.sh stop server
     fi
 
 else
