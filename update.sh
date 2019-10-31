@@ -18,6 +18,7 @@ rpserver=$path/../rpserver/src
 rpui=$path/../rpui/src
 ui_app=$rpui/ui_app
 ui_handlers=$rpui/ui_handlers
+ct_handlers=$rpui/ct_handlers
 
 ui_app_dist=$ui_app/dist
 ui_app_dist_app=$ui_app_dist/heap
@@ -57,7 +58,7 @@ if [[ $current != $last ]]; then
     for js in $app_name*.js
     do [ -f "$js" ]
         echo "" > $app_name.app.html
-        echo "<script src='/heap/$js' />" >> $app_name.app.html
+        echo "<script src='/heap/$js' ></script>" >> $app_name.app.html
     done
 
 fi
@@ -75,6 +76,7 @@ mkdir -p $mongo_chroot
 /bin/cp -uv $rpui/* $tornado_chroot > /dev/null
 /bin/cp -uRv $rpui/lib $tornado_chroot > /dev/null
 /bin/cp -uRv $ui_handlers $tornado_chroot > /dev/null
+/bin/cp -uRv $ct_handlers $tornado_chroot > /dev/null
 /bin/cp -uv $ui_app_dist_app/*.html $tornado_chroot/template > /dev/null
 
 #/bin/cp -uRv $rpserver/* $tornado_chroot > /dev/null
