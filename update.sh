@@ -29,7 +29,7 @@ mkdir -p $ui_app_dist_app/i18n
 mkdir -p $tornado_chroot/template
 
 cd $ui_app
-current="$(du -bs src dist)"
+current="$(du -bs src)"
 last="$(cat src.total)"
 
 if [[ $current != $last ]]; then
@@ -43,7 +43,7 @@ if [[ $current != $last ]]; then
     if ! [ $OUT -eq 0 ];then
         exit 1
     fi
-    du -bs src dist > src.total
+    du -bs src > src.total
 
     cd $ui_app_dist_app
 
@@ -55,6 +55,20 @@ if [[ $current != $last ]]; then
     done
 
     app_name=node
+    for js in $app_name*.js
+    do [ -f "$js" ]
+        echo "" > $app_name.app.html
+        echo "<script src='/heap/$js' ></script>" >> $app_name.app.html
+    done
+
+    app_name=front
+    for js in $app_name*.js
+    do [ -f "$js" ]
+        echo "" > $app_name.app.html
+        echo "<script src='/heap/$js' ></script>" >> $app_name.app.html
+    done
+
+    app_name=admin
     for js in $app_name*.js
     do [ -f "$js" ]
         echo "" > $app_name.app.html
@@ -79,6 +93,7 @@ mkdir -p $mongo_chroot
 /bin/cp -uRv $ct_handlers $tornado_chroot > /dev/null
 /bin/cp -uv $ui_app_dist_app/*.html $tornado_chroot/template > /dev/null
 
+chmod -R 775 $nginx_chroot/*
 #/bin/cp -uRv $rpserver/* $tornado_chroot > /dev/null
 
 
