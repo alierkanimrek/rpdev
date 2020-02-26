@@ -29,5 +29,9 @@ rm $app/*.log*
 rm $app/outgoing/*
 rm $app/*.conf
 chmod -R 775 $deploy
-tar -zcvf rplexus.tar.gz deploy
+
+version="$(cat $app/version)"
+rm rplexus_latest.tar.gz
+tar -zcvf rplexus_$version.tar.gz deploy
+cp rplexus_$version.tar.gz rplexus_latest.tar.gz
 rm -rf $deploy

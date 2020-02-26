@@ -89,6 +89,7 @@ mkdir -p $mongo_chroot
 mkdir -p $tornado_chroot/outgoing
 /bin/cp -aRv $ui_app_dist/* $nginx_chroot > /dev/null
 /bin/cp -av $rpui/*.py $tornado_chroot > /dev/null
+/bin/cp -av $rpui/version $tornado_chroot > /dev/null
 /bin/cp -aRv $rpui/lib $tornado_chroot > /dev/null
 /bin/cp -aRv $ui_handlers $tornado_chroot > /dev/null
 /bin/cp -aRv $ct_handlers $tornado_chroot > /dev/null
