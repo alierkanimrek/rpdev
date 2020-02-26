@@ -1,5 +1,8 @@
 #!/bin/bash
 
+path=$(dirname $(readlink -f $0))
+cd $path
+
 touch /etc/yum.repos.d/nginx.repo
 echo '
 [nginx-stable]
@@ -39,4 +42,5 @@ yum install -y certbot python2-certbot-nginx
 sed -i -e 's/localhost/rplexus.net www.rplexus.net/g' /etc/nginx/conf.d/default.conf
 certbot --nginx -d rplexus.net -d www.rplexus.net
 
-git clone https://github.com/alierkanimrek/rpdev.git
+cp rplexus.service /lib/systemd/system
+systemctl daemon-reload
