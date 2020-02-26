@@ -80,20 +80,18 @@ fi
 
 for d in $ui_app_i18n_dirs
 do
-    /bin/cp -uv $d/*.json $ui_app_dist_app/i18n > /dev/null 2>&1
+    /bin/cp -av $d/*.json $ui_app_dist_app/i18n > /dev/null 2>&1
 done
 
-/bin/cp -uv $ui_app_i18n/lang.json $ui_app_dist_app/i18n > /dev/null
+/bin/cp -av $ui_app_i18n/lang.json $ui_app_dist_app/i18n > /dev/null
 
 mkdir -p $mongo_chroot
-/bin/cp -uRv $ui_app_dist/* $nginx_chroot > /dev/null
-/bin/cp -uv $rpui/* $tornado_chroot > /dev/null
-/bin/cp -uRv $rpui/lib $tornado_chroot > /dev/null
-/bin/cp -uRv $ui_handlers $tornado_chroot > /dev/null
-/bin/cp -uRv $ct_handlers $tornado_chroot > /dev/null
-/bin/cp -uv $ui_app_dist_app/*.html $tornado_chroot/template > /dev/null
+mkdir -p $tornado_chroot/outgoing
+/bin/cp -aRv $ui_app_dist/* $nginx_chroot > /dev/null
+/bin/cp -av $rpui/*.py $tornado_chroot > /dev/null
+/bin/cp -aRv $rpui/lib $tornado_chroot > /dev/null
+/bin/cp -aRv $ui_handlers $tornado_chroot > /dev/null
+/bin/cp -aRv $ct_handlers $tornado_chroot > /dev/null
+/bin/cp -av $ui_app_dist_app/*.html $tornado_chroot/template > /dev/null
 
 chmod -R 775 $nginx_chroot/*
-#/bin/cp -uRv $rpserver/* $tornado_chroot > /dev/null
-
-
