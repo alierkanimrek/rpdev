@@ -11,12 +11,13 @@ repo=rpui
 version="$(curl https://raw.githubusercontent.com/$uname/$repo/master/src/version)"
 
 cd $path
-curl -L https://github.com/$uname/$repo/releases/download/$version/$appname_$version.tar.gz>$appname_$version.tar.gz
+curl -L https://github.com/$uname/$repo/releases/download/$version/$appname\_$version.tar.gz>$appname\_$version.tar.gz
 
-tar -xvf $appname_$version.tar.gz
+tar -xvf $appname\_$version.tar.gz
 
-systemctl stop rplexus
 systemctl stop nginx
+systemctl stop rplexus
+sleep 5
 
 mkdir -p $static
 mkdir -p $app/release
