@@ -24,7 +24,7 @@ enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
 ' > /etc/yum.repos.d/mongodb.repo
 
-yum install -y nginx python3 git mc firewalld  mongodb-org gcc python3-devel
+yum install -y nginx python3 git mc firewalld  mongodb-org gcc python3-devel unzip
 
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python3 get-pip.py
@@ -42,5 +42,9 @@ yum install -y certbot python2-certbot-nginx
 sed -i -e 's/localhost/rplexus.net www.rplexus.net/g' /etc/nginx/conf.d/default.conf
 certbot --nginx -d rplexus.net -d www.rplexus.net
 
-cp rplexus.service /lib/systemd/system
+/usr/bin/cp rplexus.service /lib/systemd/system
 systemctl daemon-reload
+
+#Update service
+/usr/bin/cp upservice.sh /home/admin
+/usr/bin/chmod +x /home/admin/upservice.sh

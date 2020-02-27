@@ -3,7 +3,7 @@
 path=$(dirname $(readlink -f $0))
 appname=rplexus
 deploy=$path/deploy
-static=/usr/share/nginx
+static=/usr/share/nginx/html
 app=/usr/share/$appname
 log=/var/log/$appname
 uname=alierkanimrek
