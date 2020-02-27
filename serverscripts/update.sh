@@ -40,7 +40,14 @@ cp -aRv $app/backup/fontawesome $static/heap/css
 cp -av $app/backup/config.conf $app/release
 
 chown admin:admin -R $app/release
+chown admin:admin -R $app/outgoing
+chown admin:admin -R $static/heap
 chown admin:admin $log
 
 systemctl start rplexus
 systemctl start nginx
+systemctl status rplexus
+systemctl status nginx
+
+#Clean
+/bin/rm -rf deploy

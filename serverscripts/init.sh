@@ -24,7 +24,7 @@ enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
 ' > /etc/yum.repos.d/mongodb.repo
 
-yum install -y nginx python3 git mc firewalld  mongodb-org gcc python3-devel unzip
+yum install -y nginx python3 git mc firewalld  mongodb-org gcc python3-devel unzip postfix
 
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python3 get-pip.py
@@ -32,6 +32,7 @@ python3 -m pip install tornado motor argon2 bson
 
 firewall-cmd --zone=public --add-service=http --permanent
 firewall-cmd --zone=public --add-service=https --permanent
+firewall-cmd --zone=public --add-service=smtp --permanent
 firewall-cmd --reload
 
 # Let's Encrypt
@@ -46,5 +47,8 @@ certbot --nginx -d rplexus.net -d www.rplexus.net
 systemctl daemon-reload
 
 #Update service
-/usr/bin/cp upservice.sh /home/admin
-/usr/bin/chmod +x /home/admin/upservice.sh
+scripts="/usr/share/rplexus/scripts"
+mkdir -p $scripts
+/usr/bin/cp upservice.sh $scripts
+/usr/bin/cp mailer.sh $scripts
+/usr/bin/chmod +x -R $scripts/*
