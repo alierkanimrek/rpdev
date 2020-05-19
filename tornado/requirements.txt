@@ -1,3 +1,5 @@
 tornado
 motor
 argon2
+google-auth
+requests

@@ -14,24 +14,12 @@ cd $path
 source $path/vars.sh
 
 
-deploy=$path/deploy
-app=$deploy/app
-static=$deploy/static
+version="$(cat $tornado_chroot/version)"
+echo rplexus_app_$version.tar.gz
+tar -zcvf rplexus_app_$version.tar.gz nginx_root/heap/*.js nginx_root/heap/*.map nginx_root/heap/i18n tornado_root/template/*.app.*
 
-rm -rf $deploy
-mkdir -p $app
-mkdir -p $static
-cp -aRv $tornado_chroot/* $app
-cp -aRv $nginx_chroot/* $static
-find $app | grep -E "(__pycache__|\.pyc|\.pyo$)" | xargs rm -rf
-rm -rf $static/heap/css/fontawesome
-rm $app/*.log*
-rm $app/outgoing/*
-rm $app/*.conf
-chmod -R 775 $deploy
+echo -e "\nrplexus_assets_$version.tar.gz" 
+tar -zcvf rplexus_assets_$version.tar.gz nginx_root/heap/img nginx_root/heap/logo nginx_root/heap/wgt
 
-version="$(cat $app/version)"
-rm rplexus_latest.tar.gz
-tar -zcvf rplexus_$version.tar.gz deploy
-cp rplexus_$version.tar.gz rplexus_latest.tar.gz
-rm -rf $deploy
+echo -e "\nrplexus_assets_$version.tar.gz" 
+tar -zcvf rplexus_src_$version.tar.gz nginx_root/heap/*.html nginx_root/heap/css tornado_root/ct_handlers tornado_root/lib tornado_root/ui_handlers tornado_root/*.py tornado_root/version tornado_root/template

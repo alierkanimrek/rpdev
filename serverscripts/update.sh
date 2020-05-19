@@ -2,7 +2,6 @@
 
 path=$(dirname $(readlink -f $0))
 appname=rplexus
-deploy=$path/deploy
 static=/usr/share/nginx/html
 app=/usr/share/$appname
 log=/var/log/$appname
@@ -11,33 +10,60 @@ repo=rpui
 version="$(curl https://raw.githubusercontent.com/$uname/$repo/master/src/version)"
 
 cd $path
-curl -L https://github.com/$uname/$repo/releases/download/$version/$appname\_$version.tar.gz>$appname\_$version.tar.gz
+curl -L https://github.com/$uname/$repo/releases/download/$version/$appname\_app\_$version.tar.gz>$appname\_app\_$version.tar.gz
+OUT=$?
+if ! [ $OUT -eq 0 ];then
+    exit 1
+fi
+curl -L https://github.com/$uname/$repo/releases/download/$version/$appname\_assets\_$version.tar.gz>$appname\_assets\_$version.tar.gz
+OUT=$?
+if ! [ $OUT -eq 0 ];then
+    exit 1
+fi
+curl -L https://github.com/$uname/$repo/releases/download/$version/$appname\_src\_$version.tar.gz>$appname\_src\_$version.tar.gz
+OUT=$?
+if ! [ $OUT -eq 0 ];then
+    exit 1
+fi
 
-tar -xvf $appname\_$version.tar.gz
+tar -xvf $appname\_src\_$version.tar.gz 2>&1 > /dev/null
+OUT=$?
+if ! [ $OUT -eq 0 ];then
+    exit 1
+fi
+tar -xvf $appname\_assets\_$version.tar.gz 2>&1 > /dev/null
+OUT=$?
+if ! [ $OUT -eq 0 ];then
+    exit 1
+fi
+tar -xvf $appname\_app\_$version.tar.gz 2>&1 > /dev/null
+OUT=$?
+if ! [ $OUT -eq 0 ];then
+    exit 1
+fi
 
 systemctl stop nginx
 systemctl stop rplexus
-sleep 5
+sleep 3
 
 mkdir -p $static
 mkdir -p $app/release
 mkdir -p $app/backup
-mkdir -p $app/outgoing
 mkdir -p $log
+mkdir -p $app/outgoing
 
 #Backup
-rm -rf $app/backup/*
-cp -aRv $static/heap/css/fontawesome $app/backup
-cp -av $app/release/config.conf $app/backup
+rm -rf $app/backup/* 2>&1 > /dev/null
+cp -av $app/release/config.conf $app/backup 2>&1 > /dev/null
 
 #Update
-rm -rf $static/heap
-cp -aRv $deploy/static/* $static
-cp -aRv $deploy/app/* $app/release
+rm -rf $static/heap 2>&1 > /dev/null
+rm -rf $app/release/* 2>&1 > /dev/null
+cp -aRv nginx_root/heap $static 2>&1 > /dev/null
+cp -aRv tornado_root/* $app/release 2>&1 > /dev/null
 
 #Restore
-cp -aRv $app/backup/fontawesome $static/heap/css
-cp -av $app/backup/config.conf $app/release
+cp -av $app/backup/config.conf $app/release 2>&1 > /dev/null
 
 chown admin:admin -R $app/release
 chown admin:admin -R $app/outgoing
@@ -46,8 +72,11 @@ chown admin:admin $log
 
 systemctl start rplexus
 systemctl start nginx
+sleep 3
 systemctl status rplexus
 systemctl status nginx
 
 #Clean
-/bin/rm -rf deploy
+/bin/rm -rf nginx_root
+/bin/rm -rf tornado_root
+
